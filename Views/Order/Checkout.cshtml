@@ -1,0 +1,170 @@
+﻿@model FoodOrderSystem.Models.Order
+
+<div class="container mt-5">
+
+    <h2>Checkout</h2>
+    <!-- Open Payment Modal -->
+
+    <form id="checkoutForm"
+          asp-action="Checkout"
+          method="post">
+
+        <button type="button"
+                class="btn btn-success w-100"
+                data-bs-toggle="modal"
+                data-bs-target="#paymentModal"
+                onclick="resetModal()">
+            Pay Now
+        </button>
+
+    </form>
+    
+       
+       
+
+  
+
+</div>
+
+<!-- Payment Modal -->
+
+<div class="modal fade"
+     id="paymentModal"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Select Payment Method
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body text-center">
+
+                <!-- UPI Button -->
+
+                <button id="upiBtn"
+                        type="button"
+                        class="btn btn-primary w-100 mb-3"
+                        onclick="showQR()">
+                    UPI Payment
+                </button>
+                <!-- QR Code -->
+
+                <img id="upiImage"
+                     src="/images/upiqr.jpeg"
+                     class="img-fluid rounded mt-3"
+                     style="width:250px;
+                            height:250px;
+                            display:none;" />
+
+                <!-- Waiting Message -->
+
+                <div id="waitingMsg"
+                     class="alert alert-warning mt-3 d-none">
+
+                    Waiting For Payment...
+
+                </div>
+
+                <!-- Success Message -->
+
+                <div id="successMsg"
+                     class="alert alert-success mt-3 d-none">
+
+                    Payment Successful ✅
+
+                </div>
+
+                <!-- COD Button -->
+
+                <button id="codBtn"
+                        type="button"
+                        class="btn btn-success w-100 mt-3"
+                        onclick="showCashMessage()">
+                    Cash On Delivery
+                </button>
+                <!-- COD Message -->
+
+                <div id="cashMessage"
+                     class="alert alert-success mt-3 d-none">
+
+                    Order Placed Successfully! ✅
+                    Payment will be collected at delivery.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+
+    function showQR() {
+
+        document.getElementById("codBtn").style.display = "none";
+
+        document.getElementById("upiImage").style.display = "block";
+
+        document.getElementById("cashMessage").classList.add("d-none");
+        document.getElementById("successMsg").classList.add("d-none");
+
+        document.getElementById("waitingMsg").classList.remove("d-none");
+
+        setTimeout(function () {
+
+            document.getElementById("waitingMsg").classList.add("d-none");
+
+            document.getElementById("successMsg").classList.remove("d-none");
+
+            setTimeout(function () {
+
+               document.getElementById("checkoutForm").submit();
+
+            }, 2000);
+
+        }, 10000);
+    }
+       function showCashMessage() {
+
+        document.getElementById("upiBtn").style.display = "none";
+
+        document.getElementById("cashMessage").classList.remove("d-none");
+
+        setTimeout(function () {
+
+            document.getElementById("checkoutForm").submit();
+
+        }, 3000);
+    }
+
+    
+        function resetModal() {
+
+        document.getElementById("upiBtn").style.display = "block";
+        document.getElementById("codBtn").style.display = "block";
+
+        document.getElementById("upiImage").style.display = "none";
+
+        document.getElementById("waitingMsg").classList.add("d-none");
+        document.getElementById("successMsg").classList.add("d-none");
+        document.getElementById("cashMessage").classList.add("d-none");
+    }
+   
+
+</script>

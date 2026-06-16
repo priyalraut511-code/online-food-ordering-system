@@ -1,0 +1,182 @@
+﻿@model IEnumerable<FoodOrderSystem.Models.Order>
+
+@using FoodOrderSystem.Models
+
+<h2 class="mb-4">Manage Orders</h2>
+
+<form method="get" asp-action="Index">
+    <div class="row mb-3">
+
+        <div class="col-md-4">
+            <input type="text"
+                   name="search"
+                   class="form-control"
+                   placeholder="Search Customer Name..."
+                   list="customerList" />
+
+            <datalist id="customerList">
+                @foreach (var customer in ViewBag.CustomerNames)
+                {
+                    <option value="@customer"></option>
+                }
+            </datalist>
+        </div>
+
+        <div class="col-md-3">
+            <select name="status" class="form-select">
+                <option value="">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Processing">Processing</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+        </div>
+
+    </div>
+</form>
+</br>
+<table class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>Order Id</th>
+            <th>Customer</th>
+            <th>Email</th>
+            <th>Food Items</th>
+            <th>Phone</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+
+            <th>Details</th>
+
+
+            <th>Order Date & Time</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.OrderId</td>
+
+                <td>@item.CustomerName</td>
+
+                <td>@item.Email</td>
+
+                <td>
+                    @if (item.OrderDetails != null &&
+                                    item.OrderDetails.Any())
+                    {
+                        @foreach (var detail in item.OrderDetails)
+                        {
+                            var food =
+                            ((List<FoodItem>)ViewBag.FoodItems)
+                            .FirstOrDefault(f =>
+                            f.FoodId == detail.FoodId);
+
+                            <div>
+                                @(food?.FoodName ?? "Unknown Food")
+                                (Qty: @detail.Quantity)
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <span>No Items</span>
+                    }
+                </td>
+
+                <td>@item.Phone</td>
+
+                <td>₹ @item.TotalAmount</td>
+
+                <td>
+                    <div class="mb-1">
+                        @if (item.Status == "Pending")
+                        {
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        }
+                        else if (item.Status == "Processing")
+                        {
+                            <span class="badge bg-primary">Processing</span>
+                        }
+                        else if (item.Status == "Delivered")
+                        {
+                            <span class="badge bg-success">Delivered</span>
+                        }
+                        else if (item.Status == "Cancelled")
+                        {
+                            <span class="badge bg-danger">Cancelled</span>
+                        }
+                    </div>
+
+                    <form asp-action="UpdateStatus" asp-controller="Order" method="post">
+                        <input type="hidden" name="id" value="@item.OrderId" />
+
+                        <select name="status" class="form-select form-select-sm"
+                                onchange="this.form.submit()">
+                            <option value="Pending">Pending</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </form>
+                </td>
+
+                <td>
+                    <button type="button"
+                            class="btn btn-info btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#orderModal_@item.OrderId">
+                        View Details
+                    </button>
+
+                    <div class="modal fade"
+                         id="orderModal_@item.OrderId"
+                         tabindex="-1">
+
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        Order Details - #@item.OrderId
+                                    </h5>
+
+                                    <button type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="modal">
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <p><strong>Customer:</strong> @item.CustomerName</p>
+                                    <p><strong>Email:</strong> @item.Email</p>
+                                    <p><strong>Phone:</strong> @item.Phone</p>
+                                    <p><strong>Status:</strong> @item.Status</p>
+                                    <p><strong>Total Amount:</strong> ₹ @item.TotalAmount</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </td>
+               
+                <td>@item.OrderDate.ToString("dd-MM-yyyy hh:mm tt")</td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

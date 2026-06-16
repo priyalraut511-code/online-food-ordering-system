@@ -1,0 +1,78 @@
+﻿@model IEnumerable<FoodOrderSystem.Models.FoodItem>
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between mb-3">
+
+        <h2>
+            Manage Foods
+        </h2>
+
+        <a asp-action="Create"
+           class="btn btn-primary">
+
+            Add Food
+
+        </a>
+
+    </div>
+
+    <table class="table table-bordered">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        <img src="@item.ImageUrl"
+                             width="80"
+                             height="80" />
+                    </td>
+
+                    <td>@item.FoodName</td>
+
+                    <td>₹ @item.Price</td>
+
+                    <td>
+
+                        <a asp-action="Edit"
+                           asp-route-id="@item.FoodId"
+                           class="btn btn-warning btn-sm">
+
+                            Update
+
+                        </a>
+
+                        <a asp-action="Delete"
+                           asp-route-id="@item.FoodId"
+                           class="btn btn-danger btn-sm">
+
+                            Delete
+
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

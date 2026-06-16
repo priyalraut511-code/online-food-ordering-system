@@ -1,0 +1,73 @@
+﻿@model IEnumerable<FoodOrderSystem.Models.ApplicationUser>
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">
+        All Users
+    </h2>
+
+    <table class="table table-bordered">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.Email</td>
+
+                    <td>@item.Role</td>
+
+                    <td>
+
+                        @if (item.Role == "User")
+                        {
+                            <a asp-action="MakeAdmin"
+                               asp-route-id="@item.Id"
+                               class="btn btn-success btn-sm">
+                                Make Admin
+                            </a>
+                        }
+                        else
+                        {
+                            if (User.Identity.Name != item.Email)
+                            {
+                                <a asp-action="RemoveAdmin"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-warning btn-sm">
+                                    Remove Admin
+                                </a>
+                            }
+                        }
+
+                        @if (User.Identity.Name != item.Email)
+                        {
+                            <a asp-action="Delete"
+                               asp-route-id="@item.Id"
+                               class="btn btn-danger btn-sm">
+
+                                Delete
+
+                            </a>
+                        }
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

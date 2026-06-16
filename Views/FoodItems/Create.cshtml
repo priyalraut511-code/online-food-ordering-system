@@ -1,0 +1,75 @@
+﻿@model FoodOrderSystem.Models.FoodItem
+
+<div class="container mt-4">
+
+    <h2>Add Food</h2>
+    <form method="post"
+          enctype="multipart/form-data">
+
+        <div class="mb-3">
+
+            <label>Food Name</label>
+
+            <input asp-for="FoodName"
+                   class="form-control" />
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Price</label>
+
+            <input asp-for="Price"
+                   class="form-control" />
+
+        </div>
+        <div class="mb-3">
+
+            <label>Category</label>
+
+            <select asp-for="CategoryId"
+                    class="form-control">
+
+                @foreach (var item in ViewBag.Categories)
+                {
+                    <option value="@item.CategoryId">
+
+                        @item.CategoryName
+
+                    </option>
+                }
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Image URL</label>
+
+            <input type="file"
+                   name="ImageFile"
+                   class="form-control" />
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Description</label>
+
+            <textarea asp-for="Description"
+                      class="form-control">
+            </textarea>
+
+        </div>
+
+        <button type="submit"
+                class="btn btn-success">
+
+            Save
+
+        </button>
+
+    </form>
+
+</div>

@@ -1,0 +1,115 @@
+﻿@model List<FoodOrderSystem.Models.Cart>
+
+<div class="container mt-5">
+
+    <h2 class="mb-4 text-center">
+
+        Shopping Cart
+
+    </h2>
+
+    <table class="table table-bordered">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>Food</th>
+
+                <th>Price</th>
+
+                <th>Quantity</th>
+
+                <th>Total</th>
+
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.FoodName</td>
+
+                    <td>₹ @item.Price</td>
+
+                    <td>
+
+                        <a asp-action="DecreaseQuantity"
+                           asp-route-id="@item.FoodId"
+                           class="btn btn-danger btn-sm">
+
+                            -
+
+                        </a>
+
+                        <span class="mx-2 fw-bold">
+
+                            @item.Quantity
+
+                        </span>
+
+                        <a asp-action="IncreaseQuantity"
+                           asp-route-id="@item.FoodId"
+                           class="btn btn-success btn-sm">
+
+                            +
+
+                        </a>
+
+                    </td>
+
+                    <!-- Total Column -->
+
+                    <td>
+
+                        ₹ @(item.Price* item.Quantity)
+
+                    </td>
+
+                    <!-- Action Column -->
+
+                    <td>
+
+                        <a asp-action="Remove"
+                           asp-route-id="@item.FoodId"
+                           class="btn btn-danger">
+
+                            Remove
+
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+    <div class="text-end">
+
+        <h4>
+
+            Total:
+            ₹ @Model.Sum(x => x.Price * x.Quantity)
+
+        </h4>
+
+        <a asp-controller="Order"
+           asp-action="Checkout"
+           class="btn btn-success">
+
+            Checkout
+
+        </a>
+
+    </div>
+
+</div>

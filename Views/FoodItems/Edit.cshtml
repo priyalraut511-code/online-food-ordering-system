@@ -1,0 +1,82 @@
+﻿@model FoodOrderSystem.Models.FoodItem
+
+<div class="container mt-4">
+
+    <h2>
+        Update Food
+    </h2>
+
+    <form method="post"
+          enctype="multipart/form-data">
+
+        <input type="hidden"
+               asp-for="FoodId" />
+
+        <div class="mb-3">
+
+            <label>Food Name</label>
+
+            <input asp-for="FoodName"
+                   class="form-control" />
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Price</label>
+
+            <input asp-for="Price"
+                   class="form-control" />
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Category</label>
+
+            <select asp-for="CategoryId"
+                    class="form-control">
+
+                @foreach (var item in ViewBag.Categories)
+                {
+                    <option value="@item.CategoryId">
+
+                        @item.CategoryName
+
+                    </option>
+                }
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Choose Image</label>
+
+            <input type="file"
+                   name="ImageFile"
+                   class="form-control" />
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Description</label>
+
+            <textarea asp-for="Description"
+                      class="form-control">
+            </textarea>
+
+        </div>
+
+        <button type="submit"
+                class="btn btn-primary">
+
+            Update
+
+        </button>
+
+    </form>
+
+</div>

@@ -1,0 +1,145 @@
+﻿@model IEnumerable<FoodOrderSystem.Models.Order>
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">
+        My Orders
+    </h2>
+
+    <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+
+            <tr>
+
+       
+                <th>Order Id</th>
+                <th>User Name</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Order Date & Time</th>
+                <th>Details</th>
+          
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.OrderId</td>
+
+
+                    <td>@item.CustomerName</td>
+
+                    <td>₹ @item.TotalAmount</td>
+
+                    <td>
+                        @if (item.Status == "Pending")
+                        {
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
+                        }
+                        else if (item.Status == "Processing")
+                        {
+                            <span class="badge bg-primary">
+                                Processing
+                            </span>
+                        }
+                        else if (item.Status == "Delivered")
+                        {
+                            <span class="badge bg-success">
+                                Delivered
+                            </span>
+                        }
+                        else if (item.Status == "Cancelled")
+                        {
+                            <span class="badge bg-danger">
+                                Cancelled
+                            </span>
+                        }
+                    </td>
+
+                    <td>@item.OrderDate.ToString("dd-MM-yyyy hh:mm tt")</td>
+
+                    <td>
+
+                        <button type="button"
+                                class="btn btn-info btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#orderModal_@item.OrderId">
+
+                            View Details
+
+                        </button>
+
+                        <!-- Modal -->
+
+                        <div class="modal fade"
+                             id="orderModal_@item.OrderId"
+                             tabindex="-1">
+
+                            <div class="modal-dialog modal-lg">
+
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+
+                                        <h5 class="modal-title">
+
+                                            Order #@item.OrderId
+
+                                        </h5>
+
+                                        <button type="button"
+                                                class="btn-close"
+                                                data-bs-dismiss="modal">
+                                        </button>
+
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                        <p>
+                                            <strong>Total Amount:</strong>
+                                            ₹ @item.TotalAmount
+                                        </p>
+
+                                        <p>
+                                            <strong>Status:</strong>
+                                            @item.Status
+                                        </p>
+
+                                        <p>
+                                            <strong>Order Date:</strong>
+
+
+                    @item.OrderDate.ToString("dd-MM-yyyy hh:mm tt")
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+        
+
+    </table>
+
+</div>
